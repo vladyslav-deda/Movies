@@ -1,5 +1,6 @@
 package com.movies.di
 
+import com.movies.data.movieslist.MoviesListService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,4 +34,9 @@ object AppModule {
         okHttpBuilder.addInterceptor(HttpLoggingInterceptor())
         return okHttpBuilder.build()
     }
+
+    @Singleton
+    @Provides
+    fun provideMoviesListService(retrofit: Retrofit): MoviesListService =
+        retrofit.create(MoviesListService::class.java)
 }
