@@ -1,20 +1,17 @@
 plugins {
-    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
 }
 
 android {
-    namespace 'com.movies'
+    namespace 'com.movies.data'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.movies"
         minSdk 24
-        targetSdk 33
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -34,22 +31,10 @@ android {
 
 dependencies {
 
-    implementation project(path: ':data')
-    implementation project(path: ':domain')
-    implementation project(path: ':presentation')
-
     implementation libs.core.ktx
     implementation libs.appcompat
     implementation libs.material
-    implementation libs.constraintlayout
-    implementation libs.navigation.fragment.ktx
-    implementation libs.navigation.ui.ktx
     testImplementation libs.junit
     androidTestImplementation libs.androidx.test.ext.junit
     androidTestImplementation libs.espresso.core
-
-    implementation libs.hilt.android
-    implementation libs.retrofit2
-    implementation libs.converter.gson
-    implementation libs.logging.interceptor
 }
