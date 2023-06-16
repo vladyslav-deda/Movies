@@ -3,4 +3,11 @@
     <string name="price">Price: %d $</string>
     <string name="error_message">Looks like something went wrong, please try againg</string>
     <string name="try_again">Try again</string>
+    <string name="filter_by_price">Filter by price:</string>
+    <string name="sort_by">Sort by:</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="apply">Apply</string>
+    <string name="price_with_dollar_currency">%d $</string>
+    <string name="sorting_and_filtering">Sorting and filtering settings</string>
 </resources>

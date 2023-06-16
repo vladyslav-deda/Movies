@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -14,7 +13,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.movies.domain.moviesdetails.model.MovieDetails
 import com.movies.presentation.R
 import com.movies.presentation.databinding.FragmentMovieDetailsBinding
-import com.movies.presentation.home.viewmodel.HomeRequestState
 import com.movies.presentation.moviedetails.viewmodel.DetailsRequestState
 import com.movies.presentation.moviedetails.viewmodel.MovieDetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint

@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.movies.domain.movieslist.model.MovieItem
@@ -13,6 +12,7 @@ import com.movies.presentation.databinding.FragmentHomeBinding
 import com.movies.presentation.home.adapter.HomeMoviesAdapter
 import com.movies.presentation.home.viewmodel.HomeRequestState
 import com.movies.presentation.home.viewmodel.HomeViewModel
+import com.movies.presentation.showFilteringAndSortingDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,6 +36,17 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         observeStates()
+        initViews()
+    }
+
+    private fun initViews() {
+        binding.filteringAndSortingButton.setOnClickListener {
+            val minPriceItem =
+                viewModel.moviesList.value?.minByOrNull { it.price }?.price?.toFloat() ?: 0.0f
+            val maxPriceItem =
+                viewModel.moviesList.value?.maxByOrNull { it.price }?.price?.toFloat() ?: 0.0f
+            requireContext().showFilteringAndSortingDialog(minPriceItem, maxPriceItem)
+        }
     }
 
     private fun observeStates() {
@@ -56,6 +67,7 @@ class HomeFragment : Fragment() {
             binding.apply {
                 loading.visibility = View.GONE
                 moviesRv.visibility = View.GONE
+                filteringAndSortingButton.visibility = View.GONE
                 errorLayout.apply {
                     root.visibility = View.VISIBLE
                     tryAgainButton.setOnClickListener {
@@ -71,6 +83,7 @@ class HomeFragment : Fragment() {
             loading.visibility = View.GONE
             errorLayout.root.visibility = View.GONE
             moviesRv.visibility = View.VISIBLE
+            filteringAndSortingButton.visibility = View.VISIBLE
         }
         viewModel.updateMoviesList(movies)
     }
@@ -80,6 +93,7 @@ class HomeFragment : Fragment() {
             loading.visibility = View.VISIBLE
             errorLayout.root.visibility = View.GONE
             moviesRv.visibility = View.GONE
+            filteringAndSortingButton.visibility = View.GONE
         }
     }
 
