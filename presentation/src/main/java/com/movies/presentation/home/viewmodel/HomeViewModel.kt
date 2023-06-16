@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.movies.domain.movieslist.model.MovieItem
 import com.movies.domain.movieslist.usecase.GetMoviesListUseCase
-import com.movies.presentation.SortByValues
+import com.movies.presentation.SortType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,11 +19,17 @@ class HomeViewModel @Inject constructor(
     private val _homeRequestState = MutableLiveData<HomeRequestState>()
     val homeRequestState: LiveData<HomeRequestState> = _homeRequestState
 
-    private val _moviesList = MutableLiveData<List<MovieItem>>()
-    val moviesList: LiveData<List<MovieItem>> = _moviesList
+    private val _filteredAndSortedMoviesList = MutableLiveData<List<MovieItem>>()
+    val filteredAndSortedMoviesList: LiveData<List<MovieItem>> = _filteredAndSortedMoviesList
 
-    private val _typeOfSorting = MutableLiveData<SortByValues>()
-    val typeOfSorting: LiveData<SortByValues> = _typeOfSorting
+    private val _allMoviesList = MutableLiveData<List<MovieItem>>()
+    val allMoviesList: LiveData<List<MovieItem>> = _allMoviesList
+
+    private val _typeOfSorting = MutableLiveData<SortType>()
+    val typeOfSorting: LiveData<SortType> = _typeOfSorting
+
+    private val _priceRange = MutableLiveData<Pair<Int, Int>>()
+    val priceRange: LiveData<Pair<Int, Int>> = _priceRange
 
     init {
         loadMoviesList()
@@ -35,6 +41,7 @@ class HomeViewModel @Inject constructor(
             getMoviesListUseCase.invoke(
                 onSuccess = {
                     _homeRequestState.postValue(HomeRequestState.Successful(it))
+                    _allMoviesList.postValue(it)
                 },
                 onError = {
                     _homeRequestState.postValue(HomeRequestState.Error(it))
@@ -43,7 +50,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun updateMoviesList(movies: List<MovieItem>) = _moviesList.postValue(movies)
+    fun updateFilteredAndSortedMoviesList(movies: List<MovieItem>) =
+        _filteredAndSortedMoviesList.postValue(movies)
 
-    fun updateTypeOfSorting(type: SortByValues) = _typeOfSorting.postValue(type)
+    fun updateTypeOfSorting(type: SortType) = _typeOfSorting.postValue(type)
+
+    fun updatePriceRange(priceRange: Pair<Int, Int>) = _priceRange.postValue(priceRange)
 }

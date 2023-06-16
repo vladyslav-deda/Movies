@@ -28,6 +28,6 @@ private class MoviesDiffUtil : DiffUtil.ItemCallback<MovieItem>() {
     }
 
     override fun areContentsTheSame(oldItem: MovieItem, newItem: MovieItem): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem == newItem
     }
 }

@@ -15,15 +15,21 @@ import com.google.android.material.textview.MaterialTextView
 
 object DialogExtension {
 
-    private var sortType: SortByValues? = null
+    private var sortType: SortType? = null
+    private var minPriceRange: Int? = null
+    private var maxPriceRange: Int? = null
 
     fun Context.showFilteringAndSortingDialog(
-        minPriceValue: Float,
-        maxPriceValue: Float,
-        currentSortType: SortByValues?,
-        onApplyClicked: (newSortType: SortByValues?, newPriceRange: Pair<Int, Int>?) -> Unit
+        currentMinPriceValue: Float,
+        currentMaxPriceValue: Float,
+        generalMinPriceValue: Float,
+        generalMaxPriceValue: Float,
+        currentSortType: SortType?,
+        onApplyClicked: (newSortType: SortType?, newPriceRange: Pair<Int, Int>?) -> Unit
     ) = Dialog(this).apply {
         sortType = currentSortType
+        minPriceRange = currentMinPriceValue.toInt()
+        maxPriceRange = currentMaxPriceValue.toInt()
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.filtering_and_sorting_dialog_layout)
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -32,36 +38,46 @@ object DialogExtension {
         val priceToTextView = findViewById<MaterialTextView>(R.id.price_to_value)
 
         this@showFilteringAndSortingDialog.setPriceInTextView(
-            minPriceValue.toInt(),
+            currentMinPriceValue.toInt(),
             priceFromTextView
         )
         this@showFilteringAndSortingDialog.setPriceInTextView(
-            maxPriceValue.toInt(),
+            currentMaxPriceValue.toInt(),
             priceToTextView
         )
 
         findViewById<RangeSlider>(R.id.price_slider).apply {
-            valueFrom = minPriceValue
-            valueTo = maxPriceValue
-            setValues(minPriceValue, maxPriceValue)
+            valueFrom = generalMinPriceValue
+            valueTo = generalMaxPriceValue
+            setValues(currentMinPriceValue, currentMaxPriceValue)
             addOnChangeListener { slider, _, _ ->
+                val priceFrom = slider.values[0].toInt()
+                val priceTo = slider.values[1].toInt()
                 this@showFilteringAndSortingDialog.setPriceInTextView(
-                    slider.values[0].toInt(),
+                    priceFrom,
                     priceFromTextView
                 )
                 this@showFilteringAndSortingDialog.setPriceInTextView(
-                    slider.values[1].toInt(),
+                    priceTo,
                     priceToTextView
                 )
+                minPriceRange = priceFrom
+                maxPriceRange = priceTo
             }
         }
         val sortCheckBoxGroup = findViewById<RadioGroup>(R.id.sort_by_radio_group)
-        SortByValues.values().forEach {
+        SortType.values().forEach {
             sortCheckBoxGroup.addView(this@showFilteringAndSortingDialog.createStatusCheckBox(it))
         }
         findViewById<MaterialButton>(R.id.apply_button).setOnClickListener {
             val newSortType = if (sortType == currentSortType) null else sortType
-            onApplyClicked(newSortType, null)
+            val newPriceRange =
+                if (minPriceRange != currentMinPriceValue.toInt() || maxPriceRange != currentMaxPriceValue.toInt()) {
+                    Pair(minPriceRange!!, maxPriceRange!!)
+                } else {
+                    null
+                }
+            onApplyClicked(newSortType, newPriceRange)
             dismiss()
         }
     }.show()
@@ -70,7 +86,7 @@ object DialogExtension {
         textView.text = this.getString(R.string.price_with_dollar_currency, value)
     }
 
-    private fun Context.createStatusCheckBox(value: SortByValues): RadioButton {
+    private fun Context.createStatusCheckBox(value: SortType): RadioButton {
         return RadioButton(this).apply {
             id = View.generateViewId()
             text = value.text
@@ -78,7 +94,7 @@ object DialogExtension {
                 ColorStateList.valueOf(this@createStatusCheckBox.getColor(R.color.iris_blue))
             setTextColor(this@createStatusCheckBox.getColor(R.color.white))
             isChecked = value == sortType
-            setOnCheckedChangeListener { buttonView, isChecked ->
+            setOnCheckedChangeListener { buttonView, _ ->
                 if (buttonView.isPressed) {
                     sortType = value
                 }
