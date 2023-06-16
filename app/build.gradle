@@ -58,5 +58,5 @@ dependencies {
     implementation libs.converter.gson
     implementation libs.logging.interceptor
 
-    kapt "com.google.dagger:hilt-compiler:2.44"
+    kapt libs.hilt.compiler
 }
