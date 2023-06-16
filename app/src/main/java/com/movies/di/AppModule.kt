@@ -17,7 +17,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    private const val BASE_URL = "https://us-central1-testmodule-12b1c.cloudfunctions.net/"
+    private const val BASE_URL = "https://us-central1-temporary-692af.cloudfunctions.net/"
 
     @Singleton
     @Provides
