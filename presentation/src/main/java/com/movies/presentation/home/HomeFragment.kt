@@ -8,11 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.movies.domain.movieslist.model.MovieItem
+import com.movies.presentation.DialogExtension.showFilteringAndSortingDialog
+import com.movies.presentation.SortByValues
 import com.movies.presentation.databinding.FragmentHomeBinding
 import com.movies.presentation.home.adapter.HomeMoviesAdapter
 import com.movies.presentation.home.viewmodel.HomeRequestState
 import com.movies.presentation.home.viewmodel.HomeViewModel
-import com.movies.presentation.showFilteringAndSortingDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -45,7 +46,15 @@ class HomeFragment : Fragment() {
                 viewModel.moviesList.value?.minByOrNull { it.price }?.price?.toFloat() ?: 0.0f
             val maxPriceItem =
                 viewModel.moviesList.value?.maxByOrNull { it.price }?.price?.toFloat() ?: 0.0f
-            requireContext().showFilteringAndSortingDialog(minPriceItem, maxPriceItem)
+            requireContext().showFilteringAndSortingDialog(
+                minPriceValue =  minPriceItem,
+                maxPriceValue =  maxPriceItem,
+                currentSortType = viewModel.typeOfSorting.value,
+                onApplyClicked = { newSortType, newPriceRange ->
+                    newSortType?.let {
+                        viewModel.updateTypeOfSorting(it)
+                    }
+                })
         }
     }
 
@@ -59,6 +68,18 @@ class HomeFragment : Fragment() {
         }
         viewModel.moviesList.observe(viewLifecycleOwner) {
             moviesAdapter?.submitList(it)
+            binding.moviesRv.smoothScrollToPosition(0)
+        }
+        viewModel.typeOfSorting.observe(viewLifecycleOwner) { typeOfSorting ->
+            val currentList = viewModel.moviesList.value
+            when (typeOfSorting) {
+                SortByValues.BY_NAME_FROM_A_TO_Z -> currentList?.sortedBy { it.name }
+                SortByValues.BY_NAME_FROM_Z_TO_A -> currentList?.sortedByDescending { it.name }
+                SortByValues.BY_PRICE_FROM_CHEAP_TO_EXPENSIVE -> currentList?.sortedBy { it.price }
+                SortByValues.BY_PRICE_FROM_EXPENSIVE_TO_CHEAP -> currentList?.sortedByDescending { it.price }
+            }?.let {
+                viewModel.updateMoviesList(it)
+            }
         }
     }
 

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.movies.domain.movieslist.model.MovieItem
 import com.movies.domain.movieslist.usecase.GetMoviesListUseCase
+import com.movies.presentation.SortByValues
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,6 +21,9 @@ class HomeViewModel @Inject constructor(
 
     private val _moviesList = MutableLiveData<List<MovieItem>>()
     val moviesList: LiveData<List<MovieItem>> = _moviesList
+
+    private val _typeOfSorting = MutableLiveData<SortByValues>()
+    val typeOfSorting: LiveData<SortByValues> = _typeOfSorting
 
     init {
         loadMoviesList()
@@ -40,4 +44,6 @@ class HomeViewModel @Inject constructor(
     }
 
     fun updateMoviesList(movies: List<MovieItem>) = _moviesList.postValue(movies)
+
+    fun updateTypeOfSorting(type: SortByValues) = _typeOfSorting.postValue(type)
 }
