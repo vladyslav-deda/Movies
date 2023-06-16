@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/prussian_blue">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/error_image"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/error_outline" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/error_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:paddingHorizontal="16dp"
+            android:text="@string/error_message"
+            android:textColor="@color/iris_blue"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/error_image"
+            app:layout_constraintStart_toStartOf="@+id/error_image"
+            app:layout_constraintTop_toBottomOf="@+id/error_image" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/try_again_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/white"
+            android:paddingHorizontal="36dp"
+            android:text="@string/try_again"
+            android:textColor="@color/prussian_blue"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/error_label" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.constraintlayout.widget.ConstraintLayout>

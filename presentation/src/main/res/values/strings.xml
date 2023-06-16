@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="price">Price: %d $</string>
+    <string name="error_message">Looks like something went wrong, please try againg</string>
+    <string name="try_again">Try again</string>
+</resources>

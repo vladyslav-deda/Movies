@@ -1,5 +1,6 @@
 package com.movies.di
 
+import com.movies.data.moviedetails.MovieDetailsService
 import com.movies.data.movieslist.MoviesListService
 import dagger.Module
 import dagger.Provides
@@ -9,6 +10,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import javax.inject.Singleton
 
 @Module
@@ -39,4 +41,9 @@ object AppModule {
     @Provides
     fun provideMoviesListService(retrofit: Retrofit): MoviesListService =
         retrofit.create(MoviesListService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideMovieDetailsService(retrofit: Retrofit): MovieDetailsService =
+        retrofit.create(MovieDetailsService::class.java)
 }

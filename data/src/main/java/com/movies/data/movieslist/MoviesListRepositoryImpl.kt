@@ -18,5 +18,11 @@ class MoviesListRepositoryImpl(
         } else {
             onError(Exception("Could not load movies"))
         }
+//        val movieList = listOf(
+//            MovieItem("0", "The Shawshank Redemption", 10),
+//            MovieItem("1", "The Godfather", 15),
+//            MovieItem("2", "The Dark Knight", 12)
+//        )
+//        onSuccess(movieList)
     }
 }

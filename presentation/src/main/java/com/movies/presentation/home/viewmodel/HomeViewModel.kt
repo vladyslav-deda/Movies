@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.movies.domain.movieslist.model.MovieItem
 import com.movies.domain.movieslist.usecase.GetMoviesListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -16,6 +17,9 @@ class HomeViewModel @Inject constructor(
 
     private val _homeRequestState = MutableLiveData<HomeRequestState>()
     val homeRequestState: LiveData<HomeRequestState> = _homeRequestState
+
+    private val _moviesList = MutableLiveData<List<MovieItem>>()
+    val moviesList: LiveData<List<MovieItem>> = _moviesList
 
     init {
         loadMoviesList()
@@ -34,4 +38,6 @@ class HomeViewModel @Inject constructor(
             )
         }
     }
+
+    fun updateMoviesList(movies: List<MovieItem>) = _moviesList.postValue(movies)
 }

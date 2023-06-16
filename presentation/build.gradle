@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.hiltLibrary)
     id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -55,5 +56,9 @@ dependencies {
 
     implementation libs.hilt.android
 
-    kapt "com.google.dagger:hilt-compiler:2.44"
+    kapt libs.hilt.compiler
+    implementation libs.glide
+
+    implementation libs.lottie
+
 }

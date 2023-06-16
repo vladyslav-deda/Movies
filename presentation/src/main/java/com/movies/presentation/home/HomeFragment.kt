@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.movies.domain.movieslist.model.MovieItem
 import com.movies.presentation.databinding.FragmentHomeBinding
 import com.movies.presentation.home.adapter.HomeMoviesAdapter
 import com.movies.presentation.home.viewmodel.HomeRequestState
@@ -39,28 +41,56 @@ class HomeFragment : Fragment() {
     private fun observeStates() {
         viewModel.homeRequestState.observe(viewLifecycleOwner) {
             when (it) {
-                is HomeRequestState.Error -> Toast.makeText(
-                    requireContext(),
-                    "ERROR",
-                    Toast.LENGTH_SHORT
-                ).show()
-
-                HomeRequestState.Loading -> Toast.makeText(
-                    requireContext(),
-                    "LOADING",
-                    Toast.LENGTH_SHORT
-                ).show()
-
-                is HomeRequestState.Successful -> moviesAdapter?.submitList(it.movieItems)
+                is HomeRequestState.Error -> showErrorMessage()
+                is HomeRequestState.Successful -> showMoviesList(it.movieItems)
+                HomeRequestState.Loading -> showLoading()
             }
+        }
+        viewModel.moviesList.observe(viewLifecycleOwner) {
+            moviesAdapter?.submitList(it)
+        }
+    }
+
+    private fun showErrorMessage() {
+        binding.apply {
+            binding.apply {
+                loading.visibility = View.GONE
+                moviesRv.visibility = View.GONE
+                errorLayout.apply {
+                    root.visibility = View.VISIBLE
+                    tryAgainButton.setOnClickListener {
+                        viewModel.loadMoviesList()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showMoviesList(movies: List<MovieItem>) {
+        binding.apply {
+            loading.visibility = View.GONE
+            errorLayout.root.visibility = View.GONE
+            moviesRv.visibility = View.VISIBLE
+        }
+        viewModel.updateMoviesList(movies)
+    }
+
+    private fun showLoading() {
+        binding.apply {
+            loading.visibility = View.VISIBLE
+            errorLayout.root.visibility = View.GONE
+            moviesRv.visibility = View.GONE
         }
     }
 
     private fun initRecyclerView() {
         moviesAdapter = HomeMoviesAdapter {
-            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToMovieDetailsFragment(
+                    it.toInt()
+                )
+            )
         }
         binding.moviesRv.adapter = moviesAdapter
     }
-
 }

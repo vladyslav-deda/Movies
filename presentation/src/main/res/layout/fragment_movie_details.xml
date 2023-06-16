@@ -1,13 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/prussian_blue"
     tools:context=".moviedetails.MovieDetailsFragment">
 
-    <TextView
+    <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</FrameLayout>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/main_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/movie_image"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/movie_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/iris_blue"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/movie_image"
+                tools:text="Black Mirror" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/movie_meta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/iris_blue"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/movie_name"
+                tools:text="2019, British, Sci-Fi TV, TV Thrillers" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/movie_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/iris_blue"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/movie_meta"
+                tools:text="Mind-Bending ,Chilling, Ominous" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/movie_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/iris_blue"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/movie_rating"
+                tools:text="Price: 1000 $" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/movie_synopsis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:lineSpacingExtra="2dp"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/movie_price"
+                tools:text="Black Mirror is a British anthology television series created by Charlie Brooker. Individual episodes explore a diversity of genres, but most are near-future dystopias utilising a science fiction technology—a type of speculative fiction. The series is based on The Twilight Zone and uses technology to comment on contemporary social issues. Most episodes are written by Brooker, with heavy involvement by the executive producer Annabel Jones.\n\nThere are 22 episodes across five series and one special, in addition to the interactive film Black Mirror: Bandersnatch (2018). The first two series aired on the British network Channel 4 in 2011 and 2013" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </ScrollView>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loading"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_gravity="center"
+        android:scaleX="2"
+        android:scaleY="2"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/loading" />
+
+
+    <include
+        android:id="@+id/error_layout"
+        layout="@layout/error_layout"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
