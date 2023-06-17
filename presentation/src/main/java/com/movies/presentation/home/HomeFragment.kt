@@ -84,7 +84,10 @@ class HomeFragment : Fragment() {
         }
         viewModel.typeOfSorting.observe(viewLifecycleOwner) { typeOfSorting ->
             viewModel.allMoviesList.value?.let { moviesList ->
-                val newList = sortList(list = moviesList, sortType = typeOfSorting)
+                var newList = sortList(list = moviesList, sortType = typeOfSorting)
+                viewModel.priceRange.value?.let { pair ->
+                    newList = newList.filter { it.price in pair.first..pair.second }
+                }
                 viewModel.updateFilteredAndSortedMoviesList(newList)
             }
         }
